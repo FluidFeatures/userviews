@@ -1,0 +1,142 @@
+<html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<style>
+  body {
+    color: #333;
+    font-family: monospace;
+  }
+  .controls {
+    float: left;
+    border: 1px solid #ddd;
+    border-bottom: none;
+  }
+  .control {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  .userview-wrapper {
+    font-size: 11px;
+    width: 120px;
+    height: 120px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin: 3px;
+    float: left;
+  }
+  .userview {
+    margin-top: 4px;
+  }
+  .new {
+      background: #f7f787;
+  }
+</style>
+<script>
+
+  <% total_users = 200 %>
+  var total_users = <%= total_users %>;
+
+  //+ Jonas Raoni Soares Silva
+  //@ http://jsfromhell.com/array/shuffle [rev. #1]
+  function shuffle(v) {
+    for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
+    return v;
+  };
+
+  // http://stackoverflow.com/a/3746752
+  function range(start, end) {
+      var arr = [];
+      for (var i = start; i <= end; i++)
+          arr.push(i);
+      return arr;
+  }
+    
+  function user_request(user_id) {
+    $.ajax(
+      "/features",
+      {
+        headers: {
+          // Very very basic authentication :)
+          Authorization: user_id
+        }
+      }
+    ).success(function(html) {
+      var $user = $("#user_" + user_id),
+          $userview_wrapper = $user.closest(".userview-wrapper");
+      $user.html(html);
+      $userview_wrapper.addClass('new');
+      setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);
+    });
+  }
+  function all_user_requests() {
+    var user_ids = shuffle(range(1, total_users)),
+        i = 0,
+        user_id = null;
+        
+    for (i in user_ids) {
+      user_request(user_ids[i]);        
+    }
+  }
+  function set_feature_percent(feature_name, percent) {
+    $.ajax(
+      "/control/" + feature_name + "/" + percent
+    ).success(function() {
+      all_user_requests();          
+    });
+  }
+  
+  (function() {
+
+    all_user_requests();
+
+    $(".percent").live("change", function(e) {
+      var feature_name = $(this).closest(".control").attr("id");
+          percent = $(this).val();
+      set_feature_percent(feature_name, percent);
+    });
+
+    $(".feature-enable").live("click", function(e) {
+      var $control = $(this).closest(".control"),
+          feature_name = $control.attr("id"),
+          $select = $control.find(".percent");
+      set_feature_percent(feature_name, 100);
+      $select.val(100);
+    });
+    
+    $(".feature-disable").live("click", function(e) {
+      var $control = $(this).closest(".control"),
+          feature_name = $control.attr("id"),
+          $select = $control.find(".percent");
+      set_feature_percent(feature_name, 0);
+      $select.val(0);
+    });
+    
+  })();
+  
+</script>
+<h1>User Views</h1>
+<p>Here is the view of this application from the perspective of <%= total_users %> different users. Each user has different features enabled. This site is using FluidFeatures.com to enable / disable features for this user-base.</p>
+<div class="controls">
+  <% @features.each do |feature_name, feature| %>
+    <div class="control" id="<%= feature_name %>">
+      <img src="/img/control-icons/disable.png" class="feature-disable">
+      <img src="/img/control-icons/enable.png"class="feature-enable">
+      <select class="percent">
+        <% (0..100).each do |percent| %>
+          <option value="<%= percent %>" <% if feature["enabled"]["percent"] == percent %>selected="selected"<% end %>>
+            <%= percent %>%
+          </option>
+        <% end %>
+      </select>
+      <img src="/img/feature-icons/<%= feature_name %>.png">
+      <%= feature_name %>
+    </div>
+  <% end %>
+</div>
+<div class="users">
+  <% (1..total_users).each do |user_id| %>
+    <div class="userview-wrapper">
+      User: <%= user_id %>
+      <div class="userview" id="user_<%= user_id %>"></div>
+    </div>
+  <% end %>
+</div>

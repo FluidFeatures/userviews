@@ -1,0 +1,6 @@
+<% @icons.each do |icon_id| %>
+    <img src="/img/feature-icons/<%= icon_id %>.png" alt="<%= icon_id %>">
+<% end %>
+<% if not @icons or @icons.size == 0 %>
+  No features enabled
+<% end %>
