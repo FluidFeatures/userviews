@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/BigFastSite/fluidfeatures-rails.git
-  revision: d95750c6e6bbb83d67eeeb4b37497243b111aae8
+  revision: e7d0ee765e92853cfc5b27c6ce72cda0efd51365
   specs:
     fluidfeatures-rails (0.1.0)
       net-http-persistent (~> 2.6)
