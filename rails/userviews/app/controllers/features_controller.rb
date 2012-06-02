@@ -23,11 +23,6 @@ class FeaturesController < ApplicationController
     end
   end
   
-  def user_id
-    # defined a way to retrieve the user_id for this request
-    345
-  end
-
   def index
     @icons = []
     
