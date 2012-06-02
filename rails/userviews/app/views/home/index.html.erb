@@ -3,14 +3,26 @@
     color: #333;
     font-family: monospace;
   }
-  .controls {
+  .features {
     float: left;
     border: 1px solid #ddd;
-    border-bottom: none;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding-bottom: 15px;
+    margin: 20px;
+    -moz-box-shadow: 0 0 20px 3px #999;
+    -webkit-box-shadow: 0 0 20px 3px #999;
   }
-  .control {
+  .features h2 {
+    padding-left: 20px;
+  }
+  .feature {
     padding: 5px;
-    border-bottom: 1px solid #ddd;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .feature img {
+    padding-right: 5px;
   }
   .userview-wrapper {
     font-size: 11px;
@@ -113,24 +125,14 @@
 </script>
 <h1>User Views</h1>
 <p>Here is the view of this application from the perspective of <%= total_users %> different users. Each user has different features enabled. This site is using FluidFeatures.com to enable / disable features for this user-base.</p>
-<div class="controls">
-<% if @features %>
+<div class="features">
+  <h2>Features</h2>
   <% @features.each do |feature_name, feature| %>
-    <div class="control" id="<%= feature_name %>">
-      <img src="/img/control-icons/disable.png" class="feature-disable">
-      <img src="/img/control-icons/enable.png"class="feature-enable">
-      <select class="percent">
-        <% (0..100).each do |percent| %>
-          <option value="<%= percent %>" <% if feature["enabled"]["percent"] == percent %>selected="selected"<% end %>>
-            <%= percent %>%
-          </option>
-        <% end %>
-      </select>
+    <div class="feature">
       <img src="/img/feature-icons/<%= feature_name %>.png">
       <%= feature_name %>
     </div>
   <% end %>
-<% end %>
 </div>
 <div class="users">
   <% (1..total_users).each do |user_id| %>
