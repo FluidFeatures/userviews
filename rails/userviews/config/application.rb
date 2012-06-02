@@ -1,6 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
-# require rails with activerecord
+# require rails without activerecord
 require "action_controller/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
