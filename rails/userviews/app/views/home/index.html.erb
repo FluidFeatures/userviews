@@ -1,4 +1,4 @@
-<% total_users = 100 %>
+<% total_users = 200 %>
 
 <script>
   "use strict";
@@ -14,6 +14,14 @@
       user_request(user_ids[i]);        
     }
   }
+  
+  function handle_response(user_id, html) {
+    var $user = $("#user_" + user_id),
+        $userview_wrapper = $user.closest(".userview-wrapper");
+    $user.html(html);
+    $userview_wrapper.addClass('new');
+    setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);    
+  }
 
   function user_request(user_id) {
     $.ajax(
@@ -25,13 +33,19 @@
         }
       }
     ).success(function(html) {
-      var $user = $("#user_" + user_id),
-          $userview_wrapper = $user.closest(".userview-wrapper");
-      $user.html(html);
-      $userview_wrapper.addClass('new');
-      setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);
-      setTimeout(function() { user_request(user_id) }, 1000);
+      handle_response(user_id, html);      
+      // New request in 1 second
+      setTimeout(function() { user_request(user_id) }, rand_from_range(1000, 2000));
+
+    }).fail(function(xhr) {
+      handle_response(user_id, "Response failed");  
+      // If we failed, try again in 3 seconds
+      setTimeout(function() { user_request(user_id) }, rand_from_range(2000, 5000));
     });
+  }
+  
+  function rand_from_range(from, to) {
+    return Math.floor((Math.random()*(to-from))+from);
   }
 
   (function() {

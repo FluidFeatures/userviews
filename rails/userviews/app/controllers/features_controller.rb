@@ -54,23 +54,20 @@ class FeaturesController < ApplicationController
     end
     
     if fluidfeature("badges", false)
-      # Fake duration this feature takes to run.
-      # In real-life this would be db queries etc.
-      # Phew! Good job we tested this feature on 10%
-      # of our user-base. Otherwise this may have slowed down
-      # the whole site. We'll need to buy more hardware
-      # before we roll this feature out any more.
-      sleep 0.004
       @icons << "badges"
+      sleep 5
     end
     if fluidfeature("banking-integration", false)
-      # Fake some issues with this feature.
-      # Phew! Good job we only rolled this feature out
-      # to 1% of our users.
-      (1..10).each do |n|
-        $stderr.puts("PANIC!!! Something went horribly wrong!!! Abort!! Abort!!")
+      if rand(10) > 7
+        @icons << "banking-integration"
+      else
+        # Fake some issues with this feature.
+        # Phew! Good job we only rolled this feature out
+        # to 1% of our users.
+        (1..10).each do |n|
+          $stderr.puts("PANIC!!! Something went horribly wrong!!! Abort!! Abort!! (this is just an example failure)")
+        end
       end
-      @icons << "banking-integration"
     end
     if fluidfeature("bar-charts", false)
       @icons << "bar-charts"
@@ -163,11 +160,9 @@ class FeaturesController < ApplicationController
       @icons << "search"
     end
     if fluidfeature("security", false)
-      sleep 0.001
       @icons << "security"
     end
     if fluidfeature("shopping-cart", false)
-      sleep 0.002
       @icons << "shopping-cart"
     end
     if fluidfeature("sports-news", false)
@@ -177,7 +172,6 @@ class FeaturesController < ApplicationController
       @icons << "timers"
     end
     if fluidfeature("traffic-info", false)
-      sleep 0.002
       @icons << "traffic-info"
     end
     if fluidfeature("user-comments", false)
@@ -187,9 +181,9 @@ class FeaturesController < ApplicationController
       @icons << "weather"
     end
     if fluidfeature("youtube-integration", false)
-      sleep 0.004
       @icons << "youtube-integration"
     end
+    @icons = @icons.sort
     render :layout => false
   end
 end
