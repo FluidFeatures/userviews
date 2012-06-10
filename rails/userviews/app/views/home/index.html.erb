@@ -61,7 +61,7 @@
 <!-- Feature images and descriptions -->
 <div class="features">
   <h2>Features</h2>
-  <% @features.each do |feature_name, feature| %>
+  <% @feature_names.each do |feature_name| %>
     <div class="feature">
       <img src="/img/feature-icons/<%= feature_name %>.png">
       <%= feature_name %>
