@@ -1,6 +1,9 @@
 class HomeController < ApplicationController
   def index
-    @features = FluidFeatures::Rails.get_feature_set
-    @features = @features.sort
+    @feature_names =
+      Dir.entries(File.join(::Rails.root, "public/img/feature-icons")).
+        reject { |f| ! f.end_with? ".png" }.
+        map    { |f| f.split(".")[0] }.
+        sort
   end
 end
