@@ -4,8 +4,11 @@ gem 'rails', '3.2.3'
 
 gem 'jquery-rails'
 
-gem 'fluidfeatures-rails', :path => '../../../fluidfeatures-rails'
-#gem 'fluidfeatures-rails', :git => 'git://github.com/BigFastSite/fluidfeatures-rails.git'
+if File.directory? '../fluidfeatures-rails'
+  gem 'fluidfeatures-rails', :path => '../fluidfeatures-rails'
+else
+  gem 'fluidfeatures-rails', :git => 'git://github.com/BigFastSite/fluidfeatures-rails.git'
+end
 
 group :development do
     gem 'debugger'
