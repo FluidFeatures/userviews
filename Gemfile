@@ -11,5 +11,12 @@ else
 end
 
 group :development do
-    gem 'debugger'
+  gem 'debugger', :platforms => :ruby
+  gem 'pry',      :platforms => :jruby
 end
+
+# JRuby Rails requires this for active_support/message_encryptor.rb
+gem 'jruby-openssl',      :platforms => :jruby
+# JRuby requires this
+gem 'bouncy-castle-java', :platforms => :jruby
+
