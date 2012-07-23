@@ -7,7 +7,7 @@ gem 'jquery-rails'
 if ENV["FF_DEV"] and File.directory? '../fluidfeatures-rails'
   gem 'fluidfeatures-rails', :path => '../fluidfeatures-rails'
 else
-  gem 'fluidfeatures-rails', :git => 'git://github.com/BigFastSite/fluidfeatures-rails.git'
+  gem 'fluidfeatures-rails'
 end
 
 group :development do
