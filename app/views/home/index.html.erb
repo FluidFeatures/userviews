@@ -4,6 +4,7 @@
   "use strict";
 
   var total_users = <%= total_users %>;
+  var paused = false;
 
   function start_user_requests() {
     var user_ids = _.shuffle(_.range(1, total_users + 1)),
@@ -20,10 +21,18 @@
         $userview_wrapper = $user.closest(".userview-wrapper");
     $user.html(html);
     $userview_wrapper.addClass('new');
-    setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);    
   }
 
   function user_request(user_id) {
+    var $user = $("#user_" + user_id),
+        $userview_wrapper = $user.closest(".userview-wrapper");
+    if (paused) {
+      $userview_wrapper.removeClass('new');
+      return;
+    }
+    else {
+      setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);
+    }
     $.ajax(
       "/features",
       {
@@ -44,8 +53,20 @@
     });
   }
   
+  $(".pause").live("click", function() {
+    toggle_paused();
+    $(this).html(paused ? "Start" : "Pause");
+  })
+
   function rand_from_range(from, to) {
     return Math.floor((Math.random()*(to-from))+from);
+  }
+
+  function toggle_paused() {
+    paused = ! paused;
+    if ( ! paused ) {
+      start_user_requests();
+    }
   }
 
   (function() {
@@ -60,6 +81,10 @@
 
 <!-- Feature images and descriptions -->
 <div class="features">
+  <h2>Controls</h2>
+  <div class="controls">
+    <button class="pause">Pause</button>
+  </div>
   <h2>Features</h2>
   <% @feature_names.each do |feature_name| %>
     <div class="feature">
