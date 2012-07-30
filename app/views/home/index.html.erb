@@ -12,10 +12,22 @@
         user_id = null;
       
     for (i in user_ids) {
-      user_request(user_ids[i]);        
+      // Send request immediately sometime between immediately and 5 seconds
+      stagger_user_request(user_ids[i], 0, 5000)
     }
   }
-  
+
+  function stagger_user_request(user_id, delay, stagger) {
+    // By default, send request in 1-2 second
+    if (! delay && delay != 0) {
+      delay = 1000;
+    }
+    if (! stagger && stagger != 0) {
+      stagger = 1000;
+    }
+    setTimeout(function() { user_request(user_id) }, rand_from_range(delay, delay+stagger));
+  }
+
   function handle_response(user_id, html) {
     var $user = $("#user_" + user_id),
         $userview_wrapper = $user.closest(".userview-wrapper");
@@ -43,13 +55,11 @@
       }
     ).success(function(html) {
       handle_response(user_id, html);      
-      // New request in 1 second
-      setTimeout(function() { user_request(user_id) }, rand_from_range(1000, 2000));
-
+      stagger_user_request(user_id);
     }).fail(function(xhr) {
       handle_response(user_id, "Response failed");  
-      // If we failed, try again in 3 seconds
-      setTimeout(function() { user_request(user_id) }, rand_from_range(2000, 5000));
+      // If we failed, try again in 2-5 seconds
+      stagger_user_request(user_id, 2000, 3000);
     });
   }
   
