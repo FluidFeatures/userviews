@@ -33,17 +33,21 @@
         $userview_wrapper = $user.closest(".userview-wrapper");
     $user.html(html);
     $userview_wrapper.addClass('new');
+    $user.data("start", (new Date).getTime());
   }
 
   function user_request(user_id) {
     var $user = $("#user_" + user_id),
-        $userview_wrapper = $user.closest(".userview-wrapper");
+        $userview_wrapper = $user.closest(".userview-wrapper"),
+        delay = null;
     if (paused) {
       $userview_wrapper.removeClass('new');
       return;
     }
     else {
-      setTimeout(function() { $userview_wrapper.removeClass('new') }, 500);
+      // Delay for 500ms, minus the time it's already been displayed
+      delay = 500 - Math.max(0, ((new Date).getTime() - $user.data("start")));
+      setTimeout(function() { $userview_wrapper.removeClass('new') }, delay);
     }
     $.ajax(
       "/features",
