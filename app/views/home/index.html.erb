@@ -5,50 +5,61 @@
 
   var total_users = <%= total_users %>;
   var paused = false;
+  var queue = _.shuffle(_.range(1, total_users + 1));
+  var in_progress = 0;
+  var max_in_progress = 10;
 
   function start_user_requests() {
-    var user_ids = _.shuffle(_.range(1, total_users + 1)),
-        i = 0,
-        user_id = null;
-      
-    for (i in user_ids) {
-      // Send request immediately sometime between immediately and 5 seconds
-      stagger_user_request(user_ids[i], 0, 5000)
+    while (in_progress < max_in_progress) {
+      user_request();
     }
   }
 
-  function stagger_user_request(user_id, delay, stagger) {
+  function stagger_next_user_request(delay, stagger) {
     // By default, send request in 1-2 second
     if (! delay && delay != 0) {
-      delay = 1000;
+      delay = 10;
     }
     if (! stagger && stagger != 0) {
-      stagger = 1000;
+      stagger = 50;
     }
-    setTimeout(function() { user_request(user_id) }, rand_from_range(delay, delay+stagger));
+    setTimeout(function() { user_request() }, rand_from_range(delay, delay+stagger));
   }
 
   function handle_response(user_id, html) {
     var $user = $("#user_" + user_id),
-        $userview_wrapper = $user.closest(".userview-wrapper");
+        $userview_wrapper = $user.closest(".userview-wrapper"),
+        delay = 0;
+    in_progress--;
+    console.log("in_progress--", in_progress);
+    // add user back to the end of the queue
+    queue.push(user_id);
     $user.html(html);
-    $userview_wrapper.addClass('new');
-    $user.data("start", (new Date).getTime());
+
+    // Delay for 500ms, minus the time it's already been displayed
+    delay = 100 - Math.max(0, ((new Date).getTime() - $user.data("start")));
+    setTimeout(function() { $userview_wrapper.removeClass("in_progress") }, delay);
   }
 
-  function user_request(user_id) {
-    var $user = $("#user_" + user_id),
-        $userview_wrapper = $user.closest(".userview-wrapper"),
-        delay = null;
-    if (paused) {
-      $userview_wrapper.removeClass('new');
+  function user_request() {
+    var user_id = null,
+        $user = null,
+        $userview_wrapper = null;
+
+    if (paused || in_progress >= max_in_progress) {
       return;
     }
-    else {
-      // Delay for 500ms, minus the time it's already been displayed
-      delay = 500 - Math.max(0, ((new Date).getTime() - $user.data("start")));
-      setTimeout(function() { $userview_wrapper.removeClass('new') }, delay);
-    }
+
+    user_id = queue.shift();
+    in_progress++;
+    console.log("in_progress++", in_progress);
+
+    $user = $("#user_" + user_id);
+    $userview_wrapper = $user.closest(".userview-wrapper");
+
+    $userview_wrapper.addClass("in_progress");
+    $user.data("start", (new Date).getTime());
+
     $.ajax(
       "/features",
       {
@@ -59,11 +70,11 @@
       }
     ).success(function(html) {
       handle_response(user_id, html);      
-      stagger_user_request(user_id);
+      stagger_next_user_request();
     }).fail(function(xhr) {
       handle_response(user_id, "Response failed");  
       // If we failed, try again in 2-5 seconds
-      stagger_user_request(user_id, 2000, 3000);
+      stagger_next_user_request(2000, 3000);
     });
   }
   

@@ -84,6 +84,6 @@ button {
 .userview {
     margin-top: 4px;
 }
-.new {
-    background: #f7f787;
+.in_progress {
+    background: #FFFFCC;
 }
