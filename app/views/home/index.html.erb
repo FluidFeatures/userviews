@@ -31,7 +31,7 @@
         $userview_wrapper = $user.closest(".userview-wrapper"),
         delay = 0;
     in_progress--;
-    console.log("in_progress--", in_progress);
+
     // add user back to the end of the queue
     queue.push(user_id);
     $user.html(html);
@@ -52,7 +52,6 @@
 
     user_id = queue.shift();
     in_progress++;
-    console.log("in_progress++", in_progress);
 
     $user = $("#user_" + user_id);
     $userview_wrapper = $user.closest(".userview-wrapper");
