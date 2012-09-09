@@ -97,7 +97,7 @@ class FeaturesController < ApplicationController
     # A/B testing example
     #
     
-    # This is an existing features, so we set it's initial enabled state
+    # This is an existing feature, so we set it's initial enabled state
     # to fully on.
     # This will use the default version name (see fluidfeatures_defaults above),
     # although we could be explicit.
@@ -109,7 +109,22 @@ class FeaturesController < ApplicationController
     if fluidfeature("weather", { :version => "rainbows", :enabled => false })
       @icons << "rainbows"
     end
+    if fluidfeature("weather", { :version => "sunshine", :enabled => false })
+      @icons << "sunshine"
+    end
 
+    #
+    # Uncomment these to add more versions of "weather"
+    #
+    #if fluidfeature("weather", { :version => "rain", :enabled => false })
+    #  @icons << "sunny"
+    #end
+    #if fluidfeature("weather", { :version => "snow", :enabled => false })
+    #  @icons << "sunny"
+    #end
+    #if fluidfeature("weather", { :version => "cloudy", :enabled => false })
+    #  @icons << "cloudy"
+    #end
 
 
     if fluidfeature("bar-charts")
