@@ -87,3 +87,6 @@ button {
 .in_progress {
     background: #FFFFCC;
 }
+.editable {
+    background-color: yellow;
+}

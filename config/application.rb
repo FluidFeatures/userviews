@@ -5,8 +5,6 @@ require "action_controller/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 
-require 'fluidfeatures/rails'
-
 if defined?(Bundler)
   Bundler.require(*Rails.groups(:assets => %w(development test)))
 end

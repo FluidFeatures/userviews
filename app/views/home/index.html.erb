@@ -77,11 +77,6 @@
     });
   }
   
-  $(".pause").live("click", function() {
-    toggle_paused();
-    $(this).html(paused ? "Start" : "Pause");
-  })
-
   function rand_from_range(from, to) {
     return Math.floor((Math.random()*(to-from))+from);
   }
@@ -94,6 +89,12 @@
   }
 
   (function() {
+
+    $(".pause").live("click", function() {
+      toggle_paused();
+      $(this).html(paused ? "Start" : "Pause");
+    })
+
     start_user_requests();
   })();
 
