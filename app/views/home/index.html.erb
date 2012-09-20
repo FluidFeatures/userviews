@@ -100,24 +100,21 @@
 
 </script>
 
-<h1>User Views</h1>
-
-<p>Here is the view of this application from the perspective of <%= total_users %> different users. Each user has different features enabled. This site is using FluidFeatures.com to enable / disable features for this user-base.</p>
-
-<!-- Feature images and descriptions -->
-<div class="features">
-  <h2>Controls</h2>
-  <div class="controls">
-    <button class="pause">Pause</button>
+<header>
+  <div class="logo-title">
+    <div class="logo">&nbsp;</div>
+    <h1>Demo Application</h1>
+    <h2>User Views</h2>
   </div>
-  <h2>Features</h2>
-  <% @feature_names.each do |feature_name| %>
-    <div class="feature">
-      <img src="/img/feature-icons/<%= feature_name %>.png">
-      <%= feature_name %>
+  <div class="dialog">
+    <p>Here is the view of this application from the perspective of <%= total_users %> different users.</p>
+    <p>Each user has different features enabled.</p>
+    <p>This site is using <a href="http://www.fluidfeatures.com">FluidFeatures.com</a> to enable / disable features for this user-base.</p>
+    <div class="controls">
+      <button class="pause">Pause</button>
     </div>
-  <% end %>
-</div>
+  </div>
+</header>
 
 <!-- One window for each user -->
 <div class="users">

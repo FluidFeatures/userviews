@@ -90,25 +90,28 @@ class FeaturesController < ApplicationController
         end
       end
     end
-    
-    
-    
+
+
     #
-    # A/B testing example
+    # Graceful feature rollout example
     #
-    
-    # This is an existing feature, so we set it's initial enabled state
-    # to fully on.
-    # This will use the default version name (see fluidfeatures_defaults above),
+    # Multiple versions of the same feature
+    #
+
+    # "weather" is an existing feature, so we set it's
+    # initial enabled state to fully on.
+    # This will use the default version name "default",
     # although we could be explicit.
     if fluidfeature("weather", { :enabled => true })
       @icons << "weather"
     end
+
     # This version of the "weather" feature we're calling "rainbows".
     # When we first rollout this feature, it will be fully disabled.
     if fluidfeature("weather", { :version => "rainbows", :enabled => false })
       @icons << "rainbows"
     end
+
     if fluidfeature("weather", { :version => "sunshine", :enabled => false })
       @icons << "sunshine"
     end
