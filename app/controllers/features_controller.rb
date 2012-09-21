@@ -4,23 +4,37 @@ class FeaturesController < ApplicationController
   before_filter :authenticate_user
   
   def authenticate_user
-    user_id = nil
-    begin
-      # Very very basic authentication for demo purposes.
-      # Authorization header is just the user_id
-      user_id = request.headers['HTTP_AUTHORIZATION'].to_i
-    rescue
+
+    # Proxy cookie through header for this app, since all 
+    # our users are using the same browser session.
+    if request.headers["fluidfeatures_anonymous_cookie"]
+      cookies[:fluidfeatures_anonymous] = request.headers["fluidfeatures_anonymous_cookie"]
+    elsif cookies[:fluidfeatures_anonymous]
+      cookies.delete(:fluidfeatures_anonymous)
+    end
+
+    # Very very basic authentication for demo purposes.
+    # Authorization header is just the user_id
+    if request.headers['HTTP_AUTHORIZATION']
+      user_id = request.headers['HTTP_AUTHORIZATION'].to_i rescue nil
+    else
+      # anonymous user
       user_id = nil
     end
-    if user_id and user_id > 0
-      # IMPORTANT. 
-      # You need to tell fluidfeatures who this request is
-      # for. This a unique id for this user, so that
-      # fluidfeatures can manage the features for this user.
-      fluidfeatures_set_user_id(user_id)
-    else
-      render :status => 403, :nothing => true
+
+    # IMPORTANT. 
+    # You need to tell fluidfeatures who this request is
+    # for. This a unique id for this user, so that
+    # fluidfeatures can manage the features for this user.
+    fluidfeatures_set_user_id(user_id)
+
+    # Proxy cookie through header for this app, since all 
+    # our users are using the same browser session.
+    # This cookie would have been set by fluidfeatures-rails
+    if cookies[:fluidfeatures_anonymous]
+      response.headers["fluidfeatures_anonymous_cookie"] = cookies[:fluidfeatures_anonymous]
     end
+
   end
   
   # OPTIONAL

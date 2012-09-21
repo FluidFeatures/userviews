@@ -99,3 +99,48 @@ header .dialog {
 .in_progress {
     background: #FFFFCC;
 }
+
+.onoffswitch {
+    position: relative; width: 121px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 1px solid #757575; border-radius: 13px;
+}
+.onoffswitch-inner {
+    width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner > div {
+    float: left; width: 50%; height: 21px; padding: 0; line-height: 21px;
+    font-size: 14px; color: white;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner .onoffswitch-active {
+    padding-left: 10px;
+    background-color: #62C765; color: #FFFFFF;
+}
+.onoffswitch-inner .onoffswitch-inactive {
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    width: 11px; margin: 5px;
+    background: #FFFFFF;
+    border: 1px solid #757575; border-radius: 13px;
+    position: absolute; top: 0; bottom: 0; right: 96px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}

@@ -14,7 +14,8 @@ module Userviews
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
     config.autoload_paths += %W(#{config.root}/lib)
-
+    config.autoload_paths += %W(#{config.root}/app)
+    config.cache_classes = false
     FluidFeatures::Rails.initializer
   end
 end
