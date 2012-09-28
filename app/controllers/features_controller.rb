@@ -2,61 +2,6 @@
 class FeaturesController < ApplicationController
 
   before_filter :authenticate_user
-  
-  def authenticate_user
-
-    # Proxy cookie through header for this app, since all 
-    # our users are using the same browser session.
-    if request.headers["fluidfeatures_anonymous_cookie"]
-      cookies[:fluidfeatures_anonymous] = request.headers["fluidfeatures_anonymous_cookie"]
-    elsif cookies[:fluidfeatures_anonymous]
-      cookies.delete(:fluidfeatures_anonymous)
-    end
-
-    # Very very basic authentication for demo purposes.
-    # Authorization header is just the user_id
-    if request.headers['HTTP_AUTHORIZATION']
-      user_id = request.headers['HTTP_AUTHORIZATION'].to_i rescue nil
-    else
-      # anonymous user
-      user_id = nil
-    end
-
-    # IMPORTANT. 
-    # You need to tell fluidfeatures who this request is
-    # for. This a unique id for this user, so that
-    # fluidfeatures can manage the features for this user.
-    fluidfeatures_set_user_id(user_id)
-
-    # Proxy cookie through header for this app, since all 
-    # our users are using the same browser session.
-    # This cookie would have been set by fluidfeatures-rails
-    if cookies[:fluidfeatures_anonymous]
-      response.headers["fluidfeatures_anonymous_cookie"] = cookies[:fluidfeatures_anonymous]
-    end
-
-  end
-  
-  # OPTIONAL
-  # Set default for any new features. These are only used for
-  # the first time that FluidFeatures sees a feature. This happens
-  # when this feature is deployed for the first time.
-  def fluidfeatures_defaults
-    {
-      # By default unknown features are disabled.
-      :enabled => false, # no visible to any users
-
-      # You can also use these values...
-      #:enabled => true, # visible to all users (use for depreciating old features)
-      #:enabled => 10, # 10 percent of user will see it
-      #:enabled => "dev", # only members of the "dev" team (cohort) will see it initially.
-
-      # OPTIONAL
-      # Version can be omitted. This is used for A/B testing of a feature.
-      #:version => 1        # Can be a number
-      :version => "default" # Can be a string
-    }
-  end
 
   def index
     @icons = []
