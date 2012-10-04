@@ -1,132 +1,5 @@
 <% total_users = 50 %>
 
-<script>
-  "use strict";
-
-  var total_users = <%= total_users %>;
-  var queue = _.shuffle(_.range(1, total_users + 1));
-  var in_progress = 0;
-  var max_in_progress = 10;
-  var user_cookies = {};
-
-  function start_user_requests() {
-    while (in_progress < max_in_progress) {
-      user_request();
-    }
-  }
-
-  function stagger_next_user_request(delay, stagger) {
-    // By default, send request in 1-2 second
-    if (! delay && delay != 0) {
-      delay = 10;
-    }
-    if (! stagger && stagger != 0) {
-      stagger = 50;
-    }
-    setTimeout(function() { user_request() }, rand_from_range(delay, delay+stagger));
-  }
-
-  function handle_response(user_id, html) {
-    var $user = $("#user_" + user_id),
-        $userview_wrapper = $user.closest(".userview-wrapper"),
-        delay = 0;
-    in_progress--;
-
-    // add user back to the end of the queue
-    queue.push(user_id);
-    $user.html(html);
-
-    // Delay for 500ms, minus the time it's already been displayed
-    delay = 100 - Math.max(0, ((new Date).getTime() - $user.data("start")));
-    setTimeout(function() { $userview_wrapper.removeClass("in_progress") }, delay);
-  }
-
-  function user_request() {
-    var user_id = null,
-        $user = null,
-        $userview_wrapper = null,
-        headers = {};
-
-    if ( ! running() || in_progress >= max_in_progress) {
-      return;
-    }
-
-    user_id = queue.shift();
-    in_progress++;
-
-    $user = $("#user_" + user_id);
-    $userview_wrapper = $user.closest(".userview-wrapper");
-
-    $userview_wrapper.addClass("in_progress");
-    $user.data("start", (new Date).getTime());
-
-    if (users_are_signed_in()) {
-      // Very very basic authentication :)
-      headers["Authorization"] = user_id
-    }
-    else if (user_cookies[user_id]) {
-      // Set the stashed "cookie" for this user.
-      // Since we cannot actually pass the same cookie for all users
-      // we fake it with a header which the userviews application
-      // will proxy.
-      headers["fluidfeatures_anonymous_cookie"] = user_cookies[user_id]
-      //$.cookie("fluidfeatures_anonymous", user_cookies[user_id]);
-      //console.log("use cookie for user " + user_id, user_cookies[user_id]);
-    }
-    else {
-      delete headers["fluidfeatures_anonymous_cookie"];
-      //$.removeCookie("fluidfeatures_anonymous");
-    }
-
-    $.ajax(
-      "/features",
-      {
-        headers: headers
-      }
-    ).success(function(html, textStatus, jqXHR) {
-      // Stash cookie from this user
-      user_cookies[user_id] = jqXHR.getResponseHeader("fluidfeatures_anonymous_cookie");
-      if (user_cookies[user_id]) {
-        console.log("got cookie for user " + user_id, user_cookies[user_id]);
-      }
-      handle_response(user_id, html);      
-      stagger_next_user_request();
-    }).fail(function(xhr) {
-      handle_response(user_id, "Response failed");  
-      // If we failed, try again in 2-5 seconds
-      stagger_next_user_request(2000, 3000);
-    });
-  }
-  
-  function rand_from_range(from, to) {
-    return Math.floor((Math.random()*(to-from))+from);
-  }
-
-  function running() {
-    return $("input[name='running']").attr('checked');
-  }
-
-  function users_are_signed_in() {
-    return $("input[name='signed-in-users']").attr('checked');
-  }
-
-  $(document).ready(function() {
-
-    $("input[name='running']").live("change", function() {
-      if (running()) {
-        start_user_requests();
-      }
-    });
-
-    console.log("running?", running());
-    if (running()) {
-      start_user_requests();
-    }
-
-  })();
-
-</script>
-
 <header>
   <div class="logo-title">
     <div class="logo">&nbsp;</div>
@@ -149,11 +22,21 @@
           </label>
       </div>
       Demo is <div class="onoffswitch">
-          <input type="checkbox" name="running" class="onoffswitch-checkbox" id="running" checked>
+          <input type="checkbox" name="running" class="onoffswitch-checkbox" id="running">
           <label class="onoffswitch-label" for="running">
               <div class="onoffswitch-inner">
                   <div class="onoffswitch-active">Running</div>
                   <div class="onoffswitch-inactive">Paused</div>
+              </div>
+              <div class="onoffswitch-switch"></div>
+          </label>
+      </div>
+      Goals are <div class="onoffswitch">
+          <input type="checkbox" name="show-goals" class="onoffswitch-checkbox" id="show-goals">
+          <label class="onoffswitch-label" for="show-goals">
+              <div class="onoffswitch-inner">
+                  <div class="onoffswitch-active">Visible</div>
+                  <div class="onoffswitch-inactive">Hidden</div>
               </div>
               <div class="onoffswitch-switch"></div>
           </label>
@@ -165,9 +48,18 @@
 <!-- One window for each user -->
 <div class="users">
   <% (1..total_users).each do |user_id| %>
-    <div class="userview-wrapper">
+    <div class="user" id="user_<%= user_id %>" data-user-id="<%= user_id %>">
       User: <%= user_id %>
-      <div class="userview" id="user_<%= user_id %>"></div>
+      <div class="icons"></div>
+      <div class="goals hidden">
+        <button data-goal-name="buy" data-goal-version="left">Buy</button>
+        &nbsp;
+        &nbsp;
+        <button data-goal-name="sell" class="green">Sell</button>
+        &nbsp;
+        &nbsp;
+        <button data-goal-name="buy" data-goal-version="right">Buy</button>
+      </div>
     </div>
   <% end %>
 </div>

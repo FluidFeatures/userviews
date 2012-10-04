@@ -50,6 +50,48 @@ button {
     -moz-box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4);
     box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4); }
 
+button.green {
+    background-color: #43ee2e;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #43ee2e), color-stop(50%, #39c629), color-stop(50%, #17b500), color-stop(100%, #118900));
+    background-image: -webkit-linear-gradient(top, #43ee2e 0%, #39c629 50%, #17b500 50%, #118900 100%);
+    background-image: -moz-linear-gradient(top, #43ee2e 0%, #39c629 50%, #17b500 50%, #118900 100%);
+    background-image: -ms-linear-gradient(top, #43ee2e 0%, #39c629 50%, #17b500 50%, #118900 100%);
+    background-image: -o-linear-gradient(top, #43ee2e 0%, #39c629 50%, #17b500 50%, #118900 100%);
+    background-image: linear-gradient(top, #43ee2e 0%, #39c629 50%, #17b500 50%, #118900 100%);
+    border: 1px solid #119500;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0px 0px 0px 1px rgba(115, 255, 100, 0.4), 0 1px 3px #333333;
+    -moz-box-shadow: inset 0px 0px 0px 1px rgba(115, 255, 100, 0.4), 0 1px 3px #333333;
+    box-shadow: inset 0px 0px 0px 1px rgba(115, 255, 100, 0.4), 0 1px 3px #333333;
+    color: #fff;
+    line-height: 1;
+    padding: 6px 0 8px 0;
+    text-align: center;
+    text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 120px; }
+    button.green:hover {
+      background-color: #78f373;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #78f373), color-stop(50%, #50db4d), color-stop(50%, #05cb00), color-stop(100%, #06a201));
+      background-image: -webkit-linear-gradient(top, #78f373 0%, #50db4d 50%, #05cb00 50%, #06a201 100%);
+      background-image: -moz-linear-gradient(top, #78f373 0%, #50db4d 50%, #05cb00 50%, #06a201 100%);
+      background-image: -ms-linear-gradient(top, #78f373 0%, #50db4d 50%, #05cb00 50%, #06a201 100%);
+      background-image: -o-linear-gradient(top, #78f373 0%, #50db4d 50%, #05cb00 50%, #06a201 100%);
+      background-image: linear-gradient(top, #78f373 0%, #50db4d 50%, #05cb00 50%, #06a201 100%);
+      cursor: pointer; }
+    button.green:active {
+      background-color: #d43c28;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d43c28), color-stop(50%, #ad3224), color-stop(50%, #9c1500), color-stop(100%, #700d00));
+      background-image: -webkit-linear-gradient(top, #3cd428 0%, #32ad24 50%, #159c00 50%, #0d7000 100%);
+      background-image: -moz-linear-gradient(top, #3cd428 0%, #32ad24 50%, #159c00 50%, #0d7000 100%);
+      background-image: -ms-linear-gradient(top, #3cd428 0%, #32ad24 50%, #159c00 50%, #0d7000 100%);
+      background-image: -o-linear-gradient(top, #3cd428 0%, #32ad24 50%, #159c00 50%, #0d7000 100%);
+      background-image: linear-gradient(top, #3cd428 0%, #32ad24 50%, #159c00 50%, #0d7000 100%);
+}
+
 header {
     overflow: auto;
     width: 100%
@@ -80,7 +122,11 @@ header .dialog {
     -webkit-box-shadow: 0 0 10px 2px #999;
 }
 
-.userview-wrapper {
+/* Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+
+.user {
+    position: relative;
     font-size: 11px;
     width: 120px;
     height: 120px;
@@ -93,8 +139,15 @@ header .dialog {
     -moz-box-shadow: 2px 2px 2px 1px #ddd;
     -webkit-box-shadow: 2px 2px 2px 1px #ddd;
 }
-.userview {
+.icons {
     margin-top: 4px;
+}
+.goals {
+    position:absolute;
+    bottom:0;
+}
+.goals button {
+    width: 30px;
 }
 .in_progress {
     background: #FFFFCC;
