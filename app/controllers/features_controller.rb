@@ -26,13 +26,14 @@ class FeaturesController < ApplicationController
       @icons << "alerts"
     end
     
+=begin
     # Here are some other features, that we have defined for our
     # application...
     if fluidfeature("attachments")
       # Again, our functionality for this feature is pretty basic.
       @icons << "attachments"
     end
-    
+
     if fluidfeature("badges")
       @icons << "badges"
       sleep 5
@@ -49,6 +50,7 @@ class FeaturesController < ApplicationController
         end
       end
     end
+=end
 
 
     #
@@ -88,7 +90,7 @@ class FeaturesController < ApplicationController
     #  @icons << "cloudy"
     #end
 
-
+=begin
     if fluidfeature("bar-charts")
       @icons << "bar-charts"
     end
@@ -197,6 +199,7 @@ class FeaturesController < ApplicationController
     if fluidfeature("youtube-integration")
       @icons << "youtube-integration"
     end
+=end
     @icons = @icons.sort
     render :layout => false
   end
