@@ -32,8 +32,10 @@ class ApplicationController < ActionController::Base
   def current_user
     unless @current_user
       user_id = authenticate_user
+      user_fullname = request.headers["X-User-Full-Name"]
       @current_user = {
         :id      => user_id,
+        :name    => user_fullname,
         :company => "Test Company Ltd.",
         :admin   => false
       }
@@ -55,6 +57,7 @@ class ApplicationController < ActionController::Base
           :attributes => {
             # Example attributes for the user.
             # These can be any fields you wish to select users by.
+            :name    => @current_user[:name],
             :company  => @current_user[:company],
             :admin    => @current_user[:admin]
           }

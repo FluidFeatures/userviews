@@ -8,6 +8,59 @@ $(document).ready(function() {
   var max_in_progress = 10;
   var user_cookies = {};
 
+  var names = [
+      "Leticia Barras",
+      "Vanna Betters",
+      "Molly Chenail",
+      "Deborah Mccumber",
+      "Aurelio Modica",
+      "Bee Poch",
+      "Faustina Crothers",
+      "Emery Dawley",
+      "Kristi Taliaferro",
+      "Scottie Raffaele",
+      "Noble Luczak",
+      "Shirl Denault",
+      "Krista Faw",
+      "Ardelia Davalos",
+      "Arlette Rodrique",
+      "Magda Busby",
+      "Kenisha Suggs",
+      "Ellis Vazguez",
+      "Aurore Mcafee",
+      "Kylie Godwin",
+      "Keely Sullens",
+      "Virgil Fulmer",
+      "Curtis Persinger",
+      "Peg Mullings",
+      "Esteban Hyatt",
+      "Contessa Bender",
+      "Louella Grover",
+      "Thalia Piche",
+      "Margareta Moczygemba",
+      "Charlette Ogara",
+      "Ellyn Charlton",
+      "Kathyrn Drumm",
+      "Vincenza Chauncey",
+      "Cythia Legaspi",
+      "Adelaide Odem",
+      "Chantelle Rouse",
+      "Daisey Gaudet",
+      "Dann Goulart",
+      "Kathi Beiler",
+      "Ladawn Detty",
+      "Deonna Hulse",
+      "Tuyet Mallow",
+      "Jerrica Shellman",
+      "Angle Enyeart",
+      "Randi Roselli",
+      "Evelina Eastep",
+      "Roland Drucker",
+      "Andra Dulmage",
+      "Deeann Ingram",
+      "Rashida Baumgartner"
+  ];
+
   function start_user_requests() {
     while (in_progress < max_in_progress) {
       user_request();
@@ -44,14 +97,16 @@ $(document).ready(function() {
 
     if (users_are_signed_in()) {
       // Very very basic authentication :)
-      headers["Authorization"] = user_id
+      headers["Authorization"] = user_id;
+      // Let's pass in the user's name
+      headers["X-User-Full-Name"] = names[user_id - 1];
     }
     else if (user_cookies[user_id]) {
       // Set the stashed "cookie" for this user.
       // Since we cannot actually pass the same cookie for all users
       // we fake it with a header which the userviews application
       // will proxy.
-      headers["fluidfeatures_anonymous_cookie"] = user_cookies[user_id]
+      headers["fluidfeatures_anonymous_cookie"] = user_cookies[user_id];
       //$.cookie("fluidfeatures_anonymous", user_cookies[user_id]);
     }
     else {
@@ -118,6 +173,23 @@ $(document).ready(function() {
     }
     else {
       $(".goals").addClass("hidden");
+    }
+  });
+
+  $("input[name='show-names']").live("change", function() {
+    if ($(this).attr('checked')) {
+      _.each($(".name"), function(name_div) {
+         var $name = $(name_div),
+             $user = $name.closest(".user"),
+             user_id = $user.data("user-id"),
+             name = names[user_id - 1];
+         $name.html(name);
+         $user.data("name", name);
+      });
+      $(".name").removeClass("hidden");
+    }
+    else {
+      $(".name").addClass("hidden");
     }
   });
 

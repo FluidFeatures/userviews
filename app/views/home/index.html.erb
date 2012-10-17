@@ -41,6 +41,16 @@
               <div class="onoffswitch-switch"></div>
           </label>
       </div>
+      Names are <div class="onoffswitch">
+          <input type="checkbox" name="show-names" class="onoffswitch-checkbox" id="show-names">
+          <label class="onoffswitch-label" for="show-names">
+              <div class="onoffswitch-inner">
+                  <div class="onoffswitch-active">Visible</div>
+                  <div class="onoffswitch-inactive">Hidden</div>
+              </div>
+              <div class="onoffswitch-switch"></div>
+          </label>
+      </div>
     </div>
   </div>
 </header>
@@ -50,6 +60,7 @@
   <% (1..total_users).each do |user_id| %>
     <div class="user" id="user_<%= user_id %>" data-user-id="<%= user_id %>">
       User: <%= user_id %>
+      <div class="name hidden">Bob Jones</div>
       <div class="icons"></div>
       <div class="goals hidden">
         <!--
