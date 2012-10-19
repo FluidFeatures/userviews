@@ -36,8 +36,11 @@ class ApplicationController < ActionController::Base
       @current_user = {
         :id      => user_id,
         :name    => user_fullname,
-        :company => "Test Company Ltd.",
-        :admin   => false
+        :company_name => "Test Company Ltd.",
+        :company_id   => 123,
+        # Let's make anyone whose name starts with
+        # "A" an admin. Seems fair.
+        :admin   => (user_fullname && user_fullname.start_with?("A"))
       }
     end
     @current_user
@@ -54,16 +57,31 @@ class ApplicationController < ActionController::Base
       if verbose
         {
           :id => @current_user[:id],
-          :attributes => {
+          :name => @current_user[:name],
+          :unique => {
+            :twitter => @current_user[:twitter_id]
+          },
+          :cohorts => {
             # Example attributes for the user.
             # These can be any fields you wish to select users by.
-            :name    => @current_user[:name],
-            :company  => @current_user[:company],
+            :company  => {
+              # "display" is used to help you find it in the dashboard.
+              # Highly recommended unless you work with ids.
+              # This display name can change over time without consequence. 
+              :display => @current_user[:company_name],
+              # "id" should be unique this this cohort and must be static
+              # over time.
+              :id      => @current_user[:company_id]
+            },
+            # For this boolean cohort "true"|"false" is the "display"
+            # and the "id"
             :admin    => @current_user[:admin]
           }
         }
       else
-        { :id => @current_user.id }
+        {
+          :id => @current_user.id
+        }
       end
     else
     end
