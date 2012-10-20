@@ -150,7 +150,7 @@ header .dialog {
     width: 30px;
 }
 .in_progress {
-    background: #FFFFCC;
+    border: solid 1px #aaa;
 }
 
 .onoffswitch {
