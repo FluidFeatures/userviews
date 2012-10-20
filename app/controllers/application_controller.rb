@@ -1,7 +1,24 @@
 class ApplicationController < ActionController::Base
 
-  def authenticate_user
+  # fluidfeatures-rails uses a cookie "fluidfeatures_anonymous"
+  # to persist anonymous user sessions and ensure that the same
+  # user sees the same features each time. 
+  # Since we have one browser session supporting many users,
+  # we need cannot use the same cookie for each user.
+  # Therefore, we intercept the cookie at the end of the request
+  # and replace it with a response header (cookie_to_header).
+  # Our JavaScript in the browser tracks all the users sends this
+  # header back as a request header. We intercept at the beginning
+  # of the request (header_to_cookie) and convert back to a cookie,
+  # so that fluidfeatures-rails only sees the cookie.
+  # This is specific to this demonstration application, and is not
+  # required in normal applications.
+  before_filter :header_to_cookie
+  after_filter :cookie_to_header
 
+  before_filter :authenticate_user
+
+  def header_to_cookie
     # Proxy cookie through header for this app, since all 
     # our users are using the same browser session.
     if request.headers["fluidfeatures_anonymous_cookie"]
@@ -9,7 +26,18 @@ class ApplicationController < ActionController::Base
     elsif cookies[:fluidfeatures_anonymous]
       cookies.delete(:fluidfeatures_anonymous)
     end
+  end
 
+  def cookie_to_header
+    # Proxy cookie through header for this app, since all 
+    # our users are using the same browser session.
+    # This cookie would have been set by fluidfeatures-rails
+    if cookies[:fluidfeatures_anonymous]
+      response.headers["fluidfeatures_anonymous_cookie"] = cookies[:fluidfeatures_anonymous]
+    end
+  end
+
+  def authenticate_user
     # Very very basic authentication for demo purposes.
     # Authorization header is just the user_id
     if request.headers['HTTP_AUTHORIZATION']
@@ -18,14 +46,6 @@ class ApplicationController < ActionController::Base
       # anonymous user
       user_id = nil
     end
-
-    # Proxy cookie through header for this app, since all 
-    # our users are using the same browser session.
-    # This cookie would have been set by fluidfeatures-rails
-    if cookies[:fluidfeatures_anonymous]
-      response.headers["fluidfeatures_anonymous_cookie"] = cookies[:fluidfeatures_anonymous]
-    end
-
     user_id
   end
 

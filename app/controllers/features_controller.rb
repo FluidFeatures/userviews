@@ -1,8 +1,6 @@
 
 class FeaturesController < ApplicationController
 
-  before_filter :authenticate_user
-
   def index
     @icons = []
     
