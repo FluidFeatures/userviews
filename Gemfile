@@ -4,9 +4,9 @@ gem 'rails', '~> 3.2.8'
 
 gem 'jquery-rails'
 
-if ENV["FF_DEV"] and File.directory? '../fluidfeatures-rails'
-  # Use this if your tweaking the fluidfeatures-rails
-  # (Not recommended. We use this for development of the gem)
+if ENV["FF_DEV"] and File.directory? '../fluidfeatures-ruby' and File.directory? '../fluidfeatures-rails'
+  # (used this for development of the fluidfeatures gems)
+  gem 'fluidfeatures',       :path => '../fluidfeatures-ruby'
   gem 'fluidfeatures-rails', :path => '../fluidfeatures-rails'
 else
   # This is all you need 
