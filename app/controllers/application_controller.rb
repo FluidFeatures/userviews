@@ -72,13 +72,13 @@ class ApplicationController < ActionController::Base
   # what the unique id of this user is and any additional attributes
   # you wish to use for selecting users.
   #
-  def fluidfeature_current_user(verbose=false)
+  def fluidfeatures_current_user(verbose=false)
     if current_user
       if verbose
         {
           :id => @current_user[:id],
           :name => @current_user[:name],
-          :unique => {
+          :uniques => {
             :twitter => @current_user[:twitter_id]
           },
           :cohorts => {

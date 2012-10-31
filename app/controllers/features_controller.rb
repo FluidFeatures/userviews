@@ -9,7 +9,7 @@ class FeaturesController < ApplicationController
     # a feature called "address-book".
     # If this feature has not yet been configured at fluidfeatures.com
     # then this feature will start of enabled for all users.
-    if fluidfeature("address-book", { :enabled => true })
+    if ff? "address-book", true
       # Add yourlogic here for this feature labeled "address-book"
       # Here we simply log that we want to display the
       # "/img/feature-icons/address-book.png" icon.
@@ -20,23 +20,23 @@ class FeaturesController < ApplicationController
     # enabled state to false.
     # If this feature has not yet been configured at fluidfeatures.com
     # then this feature will start of disabled for all users.
-    if fluidfeature("alerts")
+    if ff? "alerts"
       @icons << "alerts"
     end
     
 =begin
     # Here are some other features, that we have defined for our
     # application...
-    if fluidfeature("attachments")
+    if ff? "attachments"
       # Again, our functionality for this feature is pretty basic.
       @icons << "attachments"
     end
 
-    if fluidfeature("badges")
+    if ff? "badges"
       @icons << "badges"
       sleep 5
     end
-    if fluidfeature("banking-integration")
+    if ff? "banking-integration"
       if rand(10) > 7
         @icons << "banking-integration"
       else
@@ -61,140 +61,140 @@ class FeaturesController < ApplicationController
     # initial enabled state to fully on.
     # This will use the default version name "default",
     # although we could be explicit.
-    if fluidfeature("weather", { :enabled => true })
+    if ff? "weather", true
       @icons << "weather"
     end
 
     # This version of the "weather" feature we're calling "rainbows".
     # When we first rollout this feature, it will be fully disabled.
-    if fluidfeature("weather", { :version => "rainbows", :enabled => false })
+    if ff? "weather", "rainbows", false
       @icons << "rainbows"
     end
 
-    if fluidfeature("weather", { :version => "sunshine", :enabled => false })
+    if ff? "weather", "sunshine", false
       @icons << "sunshine"
     end
 
     #
     # Uncomment these to add more versions of "weather"
     #
-    #if fluidfeature("weather", { :version => "rain", :enabled => false })
+    #if ff? "weather", "rain", false
     #  @icons << "sunny"
     #end
-    #if fluidfeature("weather", { :version => "snow", :enabled => false })
+    #if ff? "weather", "snow", false
     #  @icons << "sunny"
     #end
-    #if fluidfeature("weather", { :version => "cloudy", :enabled => false })
+    #if ff? "weather", "cloudy", false
     #  @icons << "cloudy"
     #end
 
 =begin
-    if fluidfeature("bar-charts")
+    if ff? "bar-charts"
       @icons << "bar-charts"
     end
-    if fluidfeature("birthday-alerts")
+    if ff? "birthday-alerts"
       @icons << "birthday-alerts"
     end
-    if fluidfeature("calendar-integration")
+    if ff? "calendar-integration"
       @icons << "calendar-integration"
     end
-    if fluidfeature("chat")
+    if ff? "chat"
       @icons << "chat"
     end
-    if fluidfeature("color-selection")
+    if ff? "color-selection"
       @icons << "color-selection"
     end
-    if fluidfeature("current-time")
+    if ff? "current-time"
       @icons << "current-time"
     end
-    if fluidfeature("delivery-information")
+    if ff? "delivery-information"
       @icons << "delivery-information"
     end
-    if fluidfeature("drawing")
+    if ff? "drawing"
       @icons << "drawing"
     end
-    if fluidfeature("drinks-menu")
+    if ff? "drinks-menu"
       @icons << "drinks-menu"
     end
-    if fluidfeature("dvd-support")
+    if ff? "dvd-support"
       @icons << "dvd-support"
     end
-    if fluidfeature("email", { :enabled => true })
+    if ff? "email", true
       @icons << "email"
     end
-    if fluidfeature("emoticons")
+    if ff? "emoticons"
       @icons << "emoticons"
     end
-    if fluidfeature("financial-management")
+    if ff? "financial-management"
       @icons << "financial-management"
     end
-    if fluidfeature("font-selection")
+    if ff? "font-selection"
       @icons << "font-selection"
     end
-    if fluidfeature("graphing")
+    if ff? "graphing"
       @icons << "graphing"
     end
-    if fluidfeature("help-buttons")
+    if ff? "help-buttons"
       @icons << "help-buttons"
     end
-    if fluidfeature("house")
+    if ff? "house"
       @icons << "house"
     end
-    if fluidfeature("like-button", { :enabled => true })
+    if ff? "like-button", true
       @icons << "like-button"
     end
-    if fluidfeature("magic-8-ball")
+    if ff? "magic-8-ball"
         @icons << "magic-8-ball"
     end
-    if fluidfeature("match-making")
+    if ff? "match-making"
       @icons << "match-making"
     end
-    if fluidfeature("new-feature")
+    if ff? "new-feature"
       @icons << "new-feature"
     end
-    if fluidfeature("painting")
+    if ff? "painting"
       @icons << "painting"
     end
-    if fluidfeature("phone-support")
+    if ff? "phone-support"
       @icons << "phone-support"
     end
-    if fluidfeature("pie-charts")
+    if ff? "pie-charts"
       @icons << "pie-charts"
     end
-    if fluidfeature("power-up")
+    if ff? "power-up"
       @icons << "power-up"
     end
-    if fluidfeature("printing")
+    if ff? "printing"
       @icons << "printing"
     end
-    if fluidfeature("ratings")
+    if ff? "ratings"
       @icons << "ratings"
     end
-    if fluidfeature("rewards")
+    if ff? "rewards"
       @icons << "rewards"
     end
-    if fluidfeature("search")
+    if ff? "search"
       @icons << "search"
     end
-    if fluidfeature("security")
+    if ff? "security"
       @icons << "security"
     end
-    if fluidfeature("shopping-cart")
+    if ff? "shopping-cart"
       @icons << "shopping-cart"
     end
-    if fluidfeature("sports-news")
+    if ff? "sports-news"
       @icons << "sports-news"
     end
-    if fluidfeature("timers")
+    if ff? "timers"
       @icons << "timers"
     end
-    if fluidfeature("traffic-info")
+    if ff? "traffic-info"
       @icons << "traffic-info"
     end
-    if fluidfeature("user-comments")
+    if ff? "user-comments"
       @icons << "user-comments"
     end
-    if fluidfeature("youtube-integration")
+    if ff? "youtube-integration"
       @icons << "youtube-integration"
     end
 =end
