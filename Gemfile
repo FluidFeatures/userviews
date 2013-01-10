@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.8'
+gem 'rails', '~> 3.2.11'
 
 gem 'jquery-rails'
 
@@ -10,7 +10,7 @@ if ENV["FF_DEV"] and File.directory? '../fluidfeatures-ruby' and File.directory?
   gem 'fluidfeatures-rails', :path => '../fluidfeatures-rails'
 else
   # This is all you need 
-  gem 'fluidfeatures-rails', '~> 0.4.4'
+  gem 'fluidfeatures-rails', '~> 0.5.0'
 end
 
 group :development do
