@@ -10,7 +10,7 @@ if ENV["FF_DEV"] and File.directory? '../fluidfeatures-ruby' and File.directory?
   gem 'fluidfeatures-rails', :path => '../fluidfeatures-rails'
 else
   # This is all you need 
-  gem 'fluidfeatures-rails', '~> 0.6.0'
+  gem 'fluidfeatures-rails', '~> 0.6.1'
 end
 
 group :development do
