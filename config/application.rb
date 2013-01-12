@@ -16,6 +16,8 @@ module Userviews
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app)
     config.cache_classes = false
-    FluidFeatures::Rails.initializer
   end
 end
+
+FluidFeatures::Rails.initializer
+
