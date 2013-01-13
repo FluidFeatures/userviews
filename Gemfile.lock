@@ -41,7 +41,7 @@ GEM
       debugger-ruby_core_source (>= 1.1.1)
     debugger-ruby_core_source (1.1.6)
     erubis (2.7.0)
-    fluidfeatures (0.6.0)
+    fluidfeatures (0.6.1)
       persistent_http (~> 1.0.3)
       uuid (~> 2.3.5)
     fluidfeatures-rails (0.6.2)
